@@ -1,42 +1,56 @@
-var textboxArray = $(".form-control");
-//name of array forEach funct that will go through each element in the array
-//the function and I am passing in the elements in the array
-textboxArray.forEach(function(myElement){{
-          if ( this.moment === "ago" ) {
-            this.style.color = ".past";
-          } 
-            else if (this.moment === "from now") {
-                this.style.color = ".future";
-                }
-                else {
-                    this.style.color = ".present";
-                }
-            
-        };
-      });
+var todayDate = moment().format('dddd, MMM Do YYYY');
+$("#currentDay").html(todayDate);
 
+$(document).ready(function () {
+    // saveBtn click listener 
+    $(".saveBtn").on("click", function () {
+        // Get nearby values of the description in JQuery
+        var text = $(this).siblings(".description").val();
+        var time = $(this).parent().attr("id");
 
-
-//text box array
-var textboxArray = $(".form-control");
-for (let i = 0; i < textboxArray.length; i++) {
-    let val = getCookie("box" + i);
-    textboxArray[i].value = val != null ? val : "";
-  }
+        // Save text in local storage
+        localStorage.setItem(time, text);
+    })
    
-  document.getElementById("date").innerHTML = moment();
-   
-  console.log(moment())
-  function test(box) {
-    setCookie("box" + box, textboxArray[box].value);
-  }
+    function timeTracker() {
+        //get current number of hours.
+        var timeNow = moment().hour();
 
-  function setCookie(name, value) {
-    document.cookie = name + "=" + value + ";path=/;";
+        // loop over time blocks
+        $(".time-block").each(function () {
+            var blockTime = parseInt($(this).attr("id").split("hour")[1]);
 
-  }
-   
-  function getCookie(name) {
-    var v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
-    return v ? v[2] : null;
-  }
+            // To check the time and add the classes for background indicators
+            if (blockTime < timeNow) {
+                $(this).removeClass("future");
+                $(this).removeClass("present");
+                $(this).addClass("past");
+            }
+            else if (blockTime === timeNow) {
+                $(this).removeClass("past");
+                $(this).removeClass("future");
+                $(this).addClass("present");
+            }
+            else {
+                $(this).removeClass("present");
+                $(this).removeClass("past");
+                $(this).addClass("future");
+
+            }
+        })
+    }
+
+    // Get item from local storage if any
+    $("#hour8 .description").val(localStorage.getItem("hour8"));
+    $("#hour9 .description").val(localStorage.getItem("hour9"));
+    $("#hour10 .description").val(localStorage.getItem("hour10"));
+    $("#hour11 .description").val(localStorage.getItem("hour11"));
+    $("#hour12 .description").val(localStorage.getItem("hour12"));
+    $("#hour13 .description").val(localStorage.getItem("hour13"));
+    $("#hour14 .description").val(localStorage.getItem("hour14"));
+    $("#hour15 .description").val(localStorage.getItem("hour15"));
+    $("#hour16 .description").val(localStorage.getItem("hour16"));
+    $("#hour17 .description").val(localStorage.getItem("hour17"));
+
+    timeTracker();
+})

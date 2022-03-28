@@ -40,6 +40,15 @@ $(document).ready(function () {
         })
     }
 
+
+
+
+  $(".saveBtn").click(function () { 
+    var scheduleTime = $(this).parent().attr("id");
+    var scheduleText = $(this).siblings(".schedule").val();
+    localStorage.setItem(scheduleTime, scheduleText);
+});
+
    
     $("#hour8 .description").val(localStorage.getItem("hour8"));
     $("#hour9 .description").val(localStorage.getItem("hour9"));
